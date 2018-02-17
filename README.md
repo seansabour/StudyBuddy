@@ -1,4 +1,4 @@
-# StuddyBuddy
+# StudyBuddy
 
 StuddyBuddy is a mobile flash card app that allows you to build flash cards to help you gain a deep understanding of your preferred subject. StudyBuddy was built with React Native.
 
