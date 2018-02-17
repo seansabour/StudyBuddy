@@ -34,6 +34,10 @@ class Quiz extends Component {
         });
     }
 
+    componentWillUnmount() {
+        this.animatedValue.removeAllListeners();
+    }
+
     flipCard = () => {
         Animated.spring(this.animatedValue, {
             toValue: this.value > 90 ? 0 : 180
@@ -78,6 +82,8 @@ class Quiz extends Component {
                 <CompletedQuiz
                     score={this.state.correct / deck.questions.length * 100}
                     resetToHome={this.props.resetToHome}
+                    title={this.props.navigation.state.params.title}
+                    navigate={this.props.navigation.navigate}
                 />
             );
         }

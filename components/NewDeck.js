@@ -31,6 +31,16 @@ class NewDeck extends Component {
         await this.props.saveDeckTitle(deckTitle);
         this.setState({ deckTitle: '' });
         Keyboard.dismiss();
+
+        const reroute = NavigationActions.navigate({
+            routeName: 'Home',
+            params: { title: 'Sean' },
+            action: NavigationActions.navigate({
+                routeName: 'Deck',
+                params: { title: deckTitle }
+            })
+        });
+        this.props.navigation.dispatch(reroute);
     };
 
     render() {
@@ -60,19 +70,15 @@ class NewDeck extends Component {
         );
     }
 }
-function mapStateToProps(state) {
-    return {
-        alerts: state.notification
-    };
-}
-function mapDispatchToProps(dispatch, { navigation }) {
-    return {
-        saveDeckTitle: title => dispatch(saveDeckTitle(title)),
-        invalidTitleNotification: () => dispatch(invalidTitleNotification()),
-        resetToHome: () => navigation.navigate({ routeName: 'Home' })
-    };
-}
+const mapStateToProps = state => ({ alerts: state.notification });
+const mapDispatchToProps = (dispatch, { navigation }) => ({
+    saveDeckTitle: title => dispatch(saveDeckTitle(title)),
+    invalidTitleNotification: () => dispatch(invalidTitleNotification()),
+    resetToHome: () => navigation.navigate({ routeName: 'Home' })
+});
+
 export default connect(mapStateToProps, mapDispatchToProps)(NewDeck);
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

@@ -75,6 +75,20 @@ export const removeAllDecks = async () => {
     }
 };
 
+export const removeDeck = async title => {
+    try {
+        let items = await AsyncStorage.getItem(NAMESPACE_STORE);
+        items = JSON.parse(items);
+        delete items[title];
+
+        await AsyncStorage.setItem(NAMESPACE_STORE, JSON.stringify(items));
+
+        return await AsyncStorage.getItem(NAMESPACE_STORE);
+    } catch (err) {
+        throw Error(`Error occured: ${err}`);
+    }
+};
+
 export const setLocalNotification = () => {
     AsyncStorage.getItem(NOTIFICATION_KEY)
         .then(JSON.parse)
@@ -109,7 +123,7 @@ export const setLocalNotification = () => {
         });
 };
 
-function createNotification() {
+const createNotification = () => {
     return {
         title: 'Teach me how to study!',
         body: "👋 Don't forget to get your daily studying in!",
@@ -123,4 +137,4 @@ function createNotification() {
             vibrate: true
         }
     };
-}
+};

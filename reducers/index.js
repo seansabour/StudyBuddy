@@ -24,7 +24,6 @@ const reducer = (state = initialState, action) => {
                     color: 'red'
                 }
             };
-        case actions.ADD_DECK_SUCCESS:
         case actions.INVALID_TITLE_NOTIFICATION:
         case actions.HIDE_ALERTS:
         case actions.INVALID_CARD:

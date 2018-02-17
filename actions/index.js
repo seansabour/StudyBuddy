@@ -4,7 +4,6 @@ import * as api from '../utils/helpers';
 export const RECEIVED_DECKS = 'RECEIVED_DECKS';
 export const SAVE_NEW_DECK_FAILED = 'SAVE_NEW_DECK_FAILED';
 export const HIDE_ALERTS = 'HIDE_ALERTS';
-export const ADD_DECK_SUCCESS = 'ADD_DECK_SUCCESS';
 export const INVALID_TITLE_NOTIFICATION = 'INVALID_TITLE_NOTIFICATION';
 export const INVALID_CARD = 'INVALID_CARD';
 export const ADDED_CARD_SUCCESS = 'ADDED_CARD_SUCCESS';
@@ -18,14 +17,6 @@ const receivedDecks = decks => ({
 const failedToSaveDeck = err => ({
     type: SAVE_NEW_DECK_FAILED,
     error: err
-});
-
-const addedDeckSuccess = () => ({
-    type: ADD_DECK_SUCCESS,
-    notification: {
-        color: 'green',
-        message: 'Successfully added a deck!'
-    }
 });
 
 const hideAlerts = () => ({
@@ -70,23 +61,28 @@ export const addCardToDeck = (title, card) => dispatch =>
     api.addCardToDeck(title, card).then(updatedDeck => {
         dispatch(receivedDecks(JSON.parse(updatedDeck)));
         dispatch(cardSuccessllyAdded());
+        setTimeout(() => {
+            dispatch(hideAlerts());
+        }, 1000);
     });
 
 export const removeAllDecks = () => dispatch =>
-    api.removeAllDecks().then(async result => {
+    api.removeAllDecks().then(result => {
         dispatch(receivedDecks(result));
     });
 
-export const saveDeckTitle = title => async dispatch => {
+export const removeDeck = title => dispatch => {
+    api.removeDeck(title).then(result => {
+        dispatch(receivedDecks(JSON.parse(result)));
+    });
+};
+
+export const saveDeckTitle = title => dispatch => {
     api
         .saveDeckTitle(title)
         .then(
             updatedDeck => {
-                dispatch(addedDeckSuccess());
                 dispatch(receivedDecks(JSON.parse(updatedDeck)));
-                setTimeout(() => {
-                    dispatch(hideAlerts());
-                }, 3000);
             },
             err => dispatch(failedToSaveDeck(err))
         )
