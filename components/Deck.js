@@ -45,7 +45,7 @@ class Deck extends Component {
 
         return (
             <View style={styles.container}>
-                <ScrollView style={styles.scroll}>
+                <ScrollView contentContainerStyle={styles.scroll}>
                     <View style={styles.headers}>
                         <Text style={styles.header}>{item.title}</Text>
                         <Text style={styles.subHeader}>
