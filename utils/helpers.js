@@ -7,7 +7,7 @@ const NAMESPACE_STORE = 'MOBILE_FLASH_CARDS:/decks';
 export const getDecks = async () => {
     try {
         let val = await AsyncStorage.getItem(NAMESPACE_STORE);
-        return val || {};
+        return val || JSON.stringify({});
     } catch (error) {
         throw Error(`Error occured: ${err}`);
     }
@@ -69,7 +69,7 @@ export const removeAllDecks = async () => {
     try {
         await AsyncStorage.removeItem(NAMESPACE_STORE);
 
-        return {};
+        return JSON.stringify({});
     } catch (err) {
         throw Error(`Error occured: ${err}`);
     }
@@ -101,8 +101,7 @@ export const setLocalNotification = () => {
 
                             let tomorrow = new Date();
                             tomorrow.setDate(tomorrow.getDate() + 1);
-                            tomorrow.setHours(17);
-                            tomorrow.setMinutes(0);
+                            tomorrow.setHours(17, 0, 0);
 
                             Notifications.scheduleLocalNotificationAsync(
                                 createNotification(),
@@ -121,6 +120,12 @@ export const setLocalNotification = () => {
                 );
             }
         });
+};
+
+export const clearLocalNotification = () => {
+    return AsyncStorage.removeItem(NOTIFICATION_KEY).then(
+        Notifications.cancelAllScheduledNotificationsAsync
+    );
 };
 
 const createNotification = () => {

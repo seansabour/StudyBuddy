@@ -53,28 +53,40 @@ const clearDecks = () => ({
     type: CLEAR_DECKS
 });
 export const getDecks = () => dispatch =>
-    api.getDecks().then(results => {
-        dispatch(receivedDecks(JSON.parse(results)));
-    });
+    api
+        .getDecks()
+        .then(results => {
+            dispatch(receivedDecks(JSON.parse(results)));
+        })
+        .catch(err => console.error(`Error getting decks: ${err}`));
 
 export const addCardToDeck = (title, card) => dispatch =>
-    api.addCardToDeck(title, card).then(updatedDeck => {
-        dispatch(receivedDecks(JSON.parse(updatedDeck)));
-        dispatch(cardSuccessllyAdded());
-        setTimeout(() => {
-            dispatch(hideAlerts());
-        }, 1000);
-    });
+    api
+        .addCardToDeck(title, card)
+        .then(updatedDeck => {
+            dispatch(receivedDecks(JSON.parse(updatedDeck)));
+            dispatch(cardSuccessllyAdded());
+            setTimeout(() => {
+                dispatch(hideAlerts());
+            }, 1000);
+        })
+        .catch(err => console.error(`Error adding card to deck: ${err}`));
 
 export const removeAllDecks = () => dispatch =>
-    api.removeAllDecks().then(result => {
-        dispatch(receivedDecks(result));
-    });
+    api
+        .removeAllDecks()
+        .then(result => {
+            dispatch(receivedDecks(JSON.parse(result)));
+        })
+        .catch(err => console.error(`Error removing all decks: ${err}`));
 
 export const removeDeck = title => dispatch => {
-    api.removeDeck(title).then(result => {
-        dispatch(receivedDecks(JSON.parse(result)));
-    });
+    api
+        .removeDeck(title)
+        .then(result => {
+            dispatch(receivedDecks(JSON.parse(result)));
+        })
+        .catch(err => console.error(`Error removing deck: ${err}`));
 };
 
 export const saveDeckTitle = title => dispatch => {
@@ -86,7 +98,5 @@ export const saveDeckTitle = title => dispatch => {
             },
             err => dispatch(failedToSaveDeck(err))
         )
-        .catch(err => {
-            throw err;
-        });
+        .catch(err => console.error(`Error saving deck title: ${err}`));
 };
